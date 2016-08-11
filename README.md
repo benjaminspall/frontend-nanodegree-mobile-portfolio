@@ -1,55 +1,52 @@
-## Website Performance Optimization portfolio project
+## Website Performance Optimization Portfolio 
 
-Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
+This portfolio comes as part of Udacity's Front-End Nanodegree Website Performance Optimization project, in which we were tasked to optimize the critical rendering path on two pages: ```index.html``` and ```views/pizza.html```.
 
-To get started, check out the repository and inspect the code.
+### Getting Started
 
-### Getting started
+To get started click the 'Download ZIP' button in the top-right of this repository's master branch, unzip its contents, then cd into the project's folder on the command line.
 
-####Part 1: Optimize PageSpeed Insights score for index.html
+Next, set up a simple HTTP server with Python by running the following command:
 
-Some useful tips to help you get started:
+```bash
+$> cd /path/to/your-project-folder
+$> python -m SimpleHTTPServer 8080
+```
 
-1. Check out the repository
-1. To inspect the site on your phone, you can run a local server
+Open a browser and visit localhost:8080.
 
-  ```bash
-  $> cd /path/to/your-project-folder
-  $> python -m SimpleHTTPServer 8080
-  ```
+Now download and install [ngrok](https://ngrok.com/) to the top-level of the project directory to make the local server accessible remotely.
 
-1. Open a browser and visit localhost:8080
-1. Download and install [ngrok](https://ngrok.com/) to the top-level of your project directory to make your local server accessible remotely.
+``` bash
+$> cd /path/to/your-project-folder
+$> ./ngrok http 8080
+```
 
-  ``` bash
-  $> cd /path/to/your-project-folder
-  $> ./ngrok http 8080
-  ```
+And you're done! Copy the public URL ngrok gives you and paste it into your browser.
 
-1. Copy the public URL ngrok gives you and try running it through PageSpeed Insights! Optional: [More on integrating ngrok, Grunt and PageSpeed.](http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/)
+### Optimizations
 
-Profile, optimize, measure... and then lather, rinse, and repeat. Good luck!
+The following optimizations were made to this project in order to optimize the critical rendering path.
 
-####Part 2: Optimize Frames per Second in pizza.html
+Optimizations to ```index.html```
 
-To optimize views/pizza.html, you will need to modify views/js/main.js until your frames per second rate is 60 fps or higher. You will find instructive comments in main.js. 
+- Removed the ‘Open Sans’ web font in favor of Arial.
+- Removed ```css/style.css``` and placed it inside ```index.html``` so another file doesn't have to be fetched.
+- Added ```media=“print”``` to ```<link href="css/print.css" rel="stylesheet">``` so it’s only loaded when someone wants to print the page.
+- Async’d ```analytics.js```
+- Minified all non-image files.
+- Reduced the size of, then compressed and removed metadata from all images using [ImageOptim](https://github.com/ImageOptim/ImageOptim).
 
-You might find the FPS Counter/HUD Display useful in Chrome developer tools described here: [Chrome Dev Tools tips-and-tricks](https://developer.chrome.com/devtools/docs/tips-and-tricks).
+Optimizations to moving background pizzas on ```views/pizza.html```
 
-### Optimization Tips and Tricks
-* [Optimizing Performance](https://developers.google.com/web/fundamentals/performance/ "web performance")
-* [Analyzing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp.html "analyzing crp")
-* [Optimizing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/optimizing-critical-rendering-path.html "optimize the crp!")
-* [Avoiding Rendering Blocking CSS](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css.html "render blocking css")
-* [Optimizing JavaScript](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/adding-interactivity-with-javascript.html "javascript")
-* [Measuring with Navigation Timing](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/measure-crp.html "nav timing api"). We didn't cover the Navigation Timing API in the first two lessons but it's an incredibly useful tool for automated page profiling. I highly recommend reading.
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/eliminate-downloads.html">The fewer the downloads, the better</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer.html">Reduce the size of text</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization.html">Optimize images</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching.html">HTTP caching</a>
+- Reduced background pizzas from 200 to 32.
+- Moved ```(document.body.scrollTop / 1250)``` calculation from for loop to ```var top```
+- Changed ```document.querySelectorAll('.mover’);``` to ```document.getElementsByClassName('mover’);```
+- Minified all non-image files.
 
-### Customization with Bootstrap
-The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> framework. All custom styles are in `dist/css/portfolio.css` in the portfolio repo.
+Optimizations to the pizza slider on ```views/pizza.html```
 
-* <a href="http://getbootstrap.com/css/">Bootstrap's CSS Classes</a>
-* <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
+- Moved ```var dx = determineDx(document.querySelectorAll(".randomPizzaContainer"), size);``` in ```changePizzaSizes(size)``` function outside of the for loop.
+- Moved ```var newwidth``` outside of the for loop.
+- Moved ```document.getElementsByClassName("randomPizzaContainer")``` outside of the for loop and placed into ```var pizzaBox```
+- Minified all non-image files.
